@@ -3,7 +3,6 @@
 /***********************************************/
 var controller = {
   resetButton: document.getElementsByClassName('reset')[0],
-
   squares: document.getElementsByClassName('square')
 };
 
@@ -35,6 +34,8 @@ var model = {
 
   player: 'X',
 
+  winner: undefined,
+
   // reset game board in storage
   // tell view to reset board on page
   resetGame: function() {
@@ -44,22 +45,24 @@ var model = {
       });
     });
     this.player = 'X';
-    view.resetBoard();
+    this.winner = undefined;
+
+    view.render();
   },
 
   // add piece to game board in storage
   // tell view to display piece on board on page
   playPiece: function(col, row) {
     this.game[row][col] = this.player;
-    view.displayPiece(this.player, `${col}-${row}`);
 
     if (this.hasWon(this.player)) {
-      view.endGame(`${this.player} Wins!`);
+      this.winner = this.player;
     } else if (this.boardFull()) {
-      view.endGame('Game Tied!');
+      this.winner = 'tie';
     } else {
-      view.switchPlayer(this.togglePlayer());
+      this.togglePlayer();
     }
+    view.render();
   },
 
   togglePlayer: function() {
@@ -127,30 +130,39 @@ var model = {
 /***********************************************/
 var view = {
 
-  squares: document.getElementsByClassName('square'),
+  announcement: document.getElementsByClassName('announcement')[0],
+  turnsDisplay: document.getElementsByClassName('turns')[0],
+  playerDisplay: document.getElementsByClassName('player')[0],
 
-  displayPiece: function(player, location) {
-    let square = document.getElementsByClassName(location)[0];
-    square.innerHTML = player;
-  },
-
-  resetBoard: function() {
-    for (let square of this.squares) {
-      square.innerHTML = '';
+  render: function() {
+    if (model.winner) {
+      this.endGame();
+    } else {
+      this.updatePlayer();
     }
-    document.getElementsByClassName('announcement')[0].style.display = 'none';
-    document.getElementsByClassName('turns')[0].style.display = 'block';
-    this.switchPlayer('X');
+
+    model.game.forEach((row, rowNum) => {
+      row.forEach((value, colNum) => {
+        let square = document.getElementsByClassName(`${colNum}-${rowNum}`)[0];
+        square.innerHTML = value;
+      });
+    });
   },
 
-  switchPlayer: function(player) {
-    document.getElementsByClassName('player')[0].innerHTML = player;
+  endGame: function() {
+    if (model.winner === 'tie') {
+      this.announcement.innerHTML = 'Game tied!';
+    } else {
+      this.announcement.innerHTML = `Player ${model.winner} Wins!`;
+    }
+
+    this.announcement.style.display = 'block';
+    this.turnsDisplay.style.display = 'none';
   },
 
-  endGame: function(message) {
-    let announcement = document.getElementsByClassName('announcement')[0];
-    announcement.innerHTML = message;
-    announcement.style.display = 'block';
-    document.getElementsByClassName('turns')[0].style.display = 'none';
+  updatePlayer: function() {
+    this.announcement.style.display = 'none';
+    this.playerDisplay.innerHTML = model.player;
+    this.turnsDisplay.style.display = 'block';
   }
 };
