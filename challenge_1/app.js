@@ -37,54 +37,52 @@ var model = {
 
   // reset game board in storage
   // tell view to reset board on page
-  resetGame: () => {
-    model.game.forEach((row) => {
+  resetGame: function() {
+    this.game.forEach((row) => {
       row.forEach((square, index) => {
         row[index] = '';
       });
     });
-    model.player = 'X';
+    this.player = 'X';
     view.resetBoard();
   },
 
   // add piece to game board in storage
   // tell view to display piece on board on page
-  playPiece: (col, row) => {
-    model.game[row][col] = model.player;
-    view.displayPiece(model.player, `${col}-${row}`);
+  playPiece: function(col, row) {
+    this.game[row][col] = this.player;
+    view.displayPiece(this.player, `${col}-${row}`);
 
-    if (model.hasWon(model.player)) {
-      view.endGame(`${model.player} Wins!`);
-    } else if (model.boardFull()) {
+    if (this.hasWon(this.player)) {
+      view.endGame(`${this.player} Wins!`);
+    } else if (this.boardFull()) {
       view.endGame('Game Tied!');
     } else {
-      view.switchPlayer(model.togglePlayer());
+      view.switchPlayer(this.togglePlayer());
     }
   },
 
-  togglePlayer: () => {
-    if (model.player === 'X') {
-      model.player = 'O';
-    } else if (model.player === 'O') {
-      model.player = 'X';
+  togglePlayer: function() {
+    if (this.player === 'X') {
+      this.player = 'O';
+    } else if (this.player === 'O') {
+      this.player = 'X';
     }
-    return model.player;
+    return this.player;
   },
 
-  // check if there's a winner
-  // tell view to display winner if yes
-  hasWon: (player) => {
-    let game = model.game;
+  hasWon: function(player) {
+    let game = this.game;
 
-    for (let pattern of model.winningCoordinates) {
-      if (model.hasMatch(player, pattern)) {
+    for (let pattern of this.winningPatterns) {
+      if (this.hasMatch(player, pattern)) {
         return true;
       }
     }
     return false;
   },
 
-  winningCoordinates: [
+  winningPatterns: [
     // vertical
     [[0, 0], [0, 1], [0, 2]],
     [[1, 0], [1, 1], [1, 2]],
@@ -100,21 +98,19 @@ var model = {
     [[0, 2], [1, 1], [2, 0]]
   ],
 
-  hasMatch: (player, pattern) => {
+  hasMatch: function(player, pattern) {
     for (let coordinates of pattern) {
       let [col, row] = coordinates;
 
-      if (model.game[row][col] !== player) {
+      if (this.game[row][col] !== player) {
         return false;
       }
     }
     return true;
   },
 
-  // check if there's a tie
-  // tell view to display tie message if yes
-  boardFull: () => {
-    for (let row of model.game) {
+  boardFull: function() {
+    for (let row of this.game) {
       for (let square of row) {
         if (square === '') {
           return false;
@@ -133,25 +129,25 @@ var view = {
 
   squares: document.getElementsByClassName('square'),
 
-  displayPiece: (player, location) => {
+  displayPiece: function(player, location) {
     let square = document.getElementsByClassName(location)[0];
     square.innerHTML = player;
   },
 
-  resetBoard: () => {
-    for (let square of view.squares) {
+  resetBoard: function() {
+    for (let square of this.squares) {
       square.innerHTML = '';
     }
     document.getElementsByClassName('announcement')[0].style.display = 'none';
     document.getElementsByClassName('turns')[0].style.display = 'block';
-    view.switchPlayer('X');
+    this.switchPlayer('X');
   },
 
-  switchPlayer: (player) => {
+  switchPlayer: function(player) {
     document.getElementsByClassName('player')[0].innerHTML = player;
   },
 
-  endGame: (message) => {
+  endGame: function(message) {
     let announcement = document.getElementsByClassName('announcement')[0];
     announcement.innerHTML = message;
     announcement.style.display = 'block';
