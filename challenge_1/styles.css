@@ -1,14 +1,66 @@
-.square {
-  display: inline-block;
-  height: 100px;
-  width: 100px;
-  border: solid black 1px;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 90px;
-  margin: 0;
+:root {
+  font-size: 15px;
+}
+body {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
+/***********************************************/
+/*                   HEADER                    */
+/***********************************************/
+header {
+  display: flex;
+  justify-content: center;
+  height: 5rem;
+}
+h1 {
+  font-size: 2rem;
+}
 .announcement {
   display: none;
+}
+
+/***********************************************/
+/*                GAME BOARD                   */
+/***********************************************/
+main {
+  display: flex;
+  justify-content: center;
+}
+.row {
+  display: flex;
+  justify-content: center;
+}
+.square {
+  display: flex;
+  height: 10rem;
+  width: 10rem;
+  border: solid black 1px;
+  justify-content: center;
+  align-items: center;
+  font-size: 9rem;
+}
+
+/***********************************************/
+/*                RESET BUTTON                 */
+/***********************************************/
+nav {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+.reset {
+  height: 2rem;
+  width: 10rem;
+  background-color: rgb(28, 187, 94);
+
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+
+  border-radius: .5rem;
+  border: none;
 }
