@@ -60,7 +60,6 @@ var model = {
     } else {
       view.switchPlayer(model.togglePlayer());
     }
-    console.table(model.game);
   },
 
   togglePlayer: () => {
@@ -131,19 +130,31 @@ var model = {
 /*                    VIEW                     */
 /***********************************************/
 var view = {
+
+  squares: document.getElementsByClassName('square'),
+
   displayPiece: (player, location) => {
-    console.log(player, location);
+    let square = document.getElementsByClassName(location)[0];
+    square.innerHTML = player;
   },
 
   resetBoard: () => {
-    console.log('called reset board in view');
+    for (let square of view.squares) {
+      square.innerHTML = '';
+    }
+    document.getElementsByClassName('announcement')[0].style.display = 'none';
+    document.getElementsByClassName('turns')[0].style.display = 'block';
+    view.switchPlayer('X');
   },
 
   switchPlayer: (player) => {
-    console.log('new player: ', player);
+    document.getElementsByClassName('player')[0].innerHTML = player;
   },
 
   endGame: (message) => {
-    console.log('ending game with message: ', message);
+    let announcement = document.getElementsByClassName('announcement')[0];
+    announcement.innerHTML = message;
+    announcement.style.display = 'block';
+    document.getElementsByClassName('turns')[0].style.display = 'none';
   }
 };

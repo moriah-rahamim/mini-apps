@@ -1,0 +1,14 @@
+.square {
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+  border: solid black 1px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 90px;
+  margin: 0;
+}
+
+.announcement {
+  display: none;
+}
