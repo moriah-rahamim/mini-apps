@@ -15,7 +15,10 @@ controller.resetButton.addEventListener('click', (event) => {
 // game square click: tell model to play the piece
 for (let square of controller.squares) {
   square.addEventListener('click', (event) => {
-    model.playPiece(event.target);
+    let coordinates = event.target.classList[1];
+    let col = coordinates[0];
+    let row = coordinates[2];
+    model.playPiece(col, row);
   })
 }
 
@@ -30,16 +33,42 @@ var model = {
     ['', '', '']
   ],
 
+  player: 'X',
+
   // reset game board in storage
   // tell view to reset board on page
   resetGame: () => {
-    console.log('reset clicked');
+    model.game.forEach((row) => {
+      row.forEach((square, index) => {
+        row[index] = '';
+      });
+    });
+    model.player = 'X';
+    view.resetBoard();
   },
 
   // add piece to game board in storage
   // tell view to display piece on board on page
-  playPiece: (square) => {
-    console.log('play piece at ' + square.className);
+  playPiece: (col, row) => {
+    model.game[row][col] = model.player;
+    view.displayPiece(model.player, `${col}-${row}`);
+
+    if (model.hasWon(model.player)) {
+      view.endGame(`${model.player} Wins!`);
+    } else if (model.isTied()) {
+      view.endGame('Game Tied!');
+    } else {
+      view.switchPlayer(model.togglePlayer());
+    }
+  },
+
+  togglePlayer: () => {
+    if (model.player === 'X') {
+      model.player = 'O';
+    } else if (model.player === 'O') {
+      model.player = 'X';
+    }
+    return model.player;
   },
 
   // check if there's a winner
@@ -48,7 +77,7 @@ var model = {
 
   // check if there's a tie
   // tell view to display tie message if yes
-  hasTied: () => {}
+  isTied: () => {}
 };
 
 
@@ -56,11 +85,19 @@ var model = {
 /*                    VIEW                     */
 /***********************************************/
 var view = {
-  displayPiece: (player, location) => {},
+  displayPiece: (player, location) => {
+    console.log(player, location);
+  },
 
-  freshBoard: () => {},
+  resetBoard: () => {
+    console.log('called reset board in view');
+  },
 
-  switchPlayer: () => {},
+  switchPlayer: (player) => {
+    console.log('new player: ', player);
+  },
 
-  endGameMessage: () => {}
+  endGame: (message) => {
+    console.log('ending game with message: ', message);
+  }
 };
