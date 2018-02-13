@@ -1,8 +1,8 @@
-var init = () => {
+$(document).ready(() => {
   var model = new Model();
   var controler = new Controller(model);
   var view = new View(model);
-}
+});
 
 // *****************************************************************************
 // CONTROLLER
@@ -40,24 +40,42 @@ class Model {
   // get a new csv version of the string
   // update this.csv
   input(json) {
-
+    this.setJson(json);
+    this.getCsv(json)
+    .then(function(csv) {
+      this.setCsv(csv);
+    });
   }
 
   setJson(json) {
-    
+    this.json = json;
   }
 
   getCsv(json) {
-
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: 'POST',
+        url: 'localhost:8000',
+        data: json,
+        dataType: 'text'
+        // ,
+        // contentType: 'json'
+        // ,
+        // success()
+      })
+      .done(function(data) {
+        resolve(data);
+      })
+      .fail(function(error) {
+        reject(error);
+      });
+    });
   }
 
-  setCsv(json) {
-
+  setCsv(csv) {
+    this.csv = csv;
   }
 }
-
-
-
 
 // *****************************************************************************
 // VIEW
@@ -70,6 +88,6 @@ class View {
   }
 
   render() {
-    
+
   }
 }
