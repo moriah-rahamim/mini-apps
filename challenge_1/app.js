@@ -55,11 +55,12 @@ var model = {
 
     if (model.hasWon(model.player)) {
       view.endGame(`${model.player} Wins!`);
-    } else if (model.isTied()) {
+    } else if (model.boardFull()) {
       view.endGame('Game Tied!');
     } else {
       view.switchPlayer(model.togglePlayer());
     }
+    console.table(model.game);
   },
 
   togglePlayer: () => {
@@ -73,11 +74,56 @@ var model = {
 
   // check if there's a winner
   // tell view to display winner if yes
-  hasWon: () => {},
+  hasWon: (player) => {
+    let game = model.game;
+
+    for (let pattern of model.winningCoordinates) {
+      if (model.hasMatch(player, pattern)) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  winningCoordinates: [
+    // vertical
+    [[0, 0], [0, 1], [0, 2]],
+    [[1, 0], [1, 1], [1, 2]],
+    [[2, 0], [2, 1], [2, 2]],
+
+    // horizontal
+    [[0, 0], [1, 0], [2, 0]],
+    [[0, 1], [1, 1], [2, 1]],
+    [[0, 2], [1, 2], [2, 2]],
+
+    // diagonal
+    [[0, 0], [1, 1], [2, 2]],
+    [[0, 2], [1, 1], [2, 0]]
+  ],
+
+  hasMatch: (player, pattern) => {
+    for (let coordinates of pattern) {
+      let [col, row] = coordinates;
+
+      if (model.game[row][col] !== player) {
+        return false;
+      }
+    }
+    return true;
+  },
 
   // check if there's a tie
   // tell view to display tie message if yes
-  isTied: () => {}
+  boardFull: () => {
+    for (let row of model.game) {
+      for (let square of row) {
+        if (square === '') {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 };
 
 
