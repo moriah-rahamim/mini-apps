@@ -92,6 +92,7 @@ class Model {
           reject(error);
         });
       } else {
+        alert('Input must be a JSON object. :)');
         reject ('content not provided in json format');
       }
     });
