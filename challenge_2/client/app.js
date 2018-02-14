@@ -15,11 +15,10 @@ class Controller {
     this.$submitButton = $('.submit');
     this.model = model;
 
-    this.$submitButton.on('click', this.submitHandler.bind(this));
+    this.$submitButton.on('click', this._submitHandler.bind(this));
     this.$form.on('submit', event => event.preventDefault());
   }
-
-  submitHandler() {
+  _submitHandler() {
     let input = this.$inputBox.val();
     this.$inputBox.val('');
     this.model.input(input);
@@ -52,24 +51,21 @@ class Model {
     }
   }
 
-  // update this.json
-  // get a new csv version of the string
-  // update this.csv
   input(json) {
-    this.setJson(json);
-    this.getCsv(json)
-    .then(this.setCsv.bind(this))
+    this._setJson(json);
+    this._getCsv(json)
+    .then(this._setCsv.bind(this))
     .catch(function(error) {
       console.log(error);
     });
   }
 
-  setJson(json) {
+  _setJson(json) {
     this.json = json;
     this._trigger('setJson');
   }
 
-  isJson(json) {
+  _isJson(json) {
     try {
       JSON.parse(json);
       return true;
@@ -79,16 +75,14 @@ class Model {
     }
   }
 
-  getCsv(json) {
-    let isJson = this.isJson(json);
+  _getCsv(json) {
+    let isJson = this._isJson(json);
     return new Promise((resolve, reject) => {
       if (isJson) {
         $.ajax({
           type: 'POST',
           url: 'http://localhost:8000',
           data: json,
-          // dataType: 'text'
-          // ,
           contentType: 'application/json'
         })
         .done(function(data) {
@@ -103,7 +97,7 @@ class Model {
     });
   }
 
-  setCsv(csv) {
+  _setCsv(csv) {
     this.csv = csv;
     this._trigger('setCsv');
   }
@@ -117,14 +111,12 @@ class View {
     this.model = model;
     this.$json = $('.json');
     this.$csv = $('.csv');
-    // variable to hold json container div
-    // variable to hold csv container div
+
     this.model.on('setCsv', this.render.bind(this));
     this.model.on('setJson', this.render.bind(this));
   }
 
   render() {
-    let json = this.model.json;
     let csv = this.model.csv;
     this._appendCsv(this.$csv, csv);
   }
