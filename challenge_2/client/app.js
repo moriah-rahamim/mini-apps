@@ -34,6 +34,22 @@ class Model {
   constructor() {
     this.json = '';
     this.csv = '';
+    this.triggers = {};
+  }
+
+  on(eventName, func, ...args) {
+    if (!this.triggers[eventName]) {
+      this.triggers[eventName] = [];
+    }
+    this.triggers[eventName].push(func.bind(null, ...args));
+  }
+
+  _trigger(eventName, ...args) {
+    if (this.triggers[eventName]) {
+      for (let func of this.triggers[eventName]) {
+        func(...args);
+      }
+    }
   }
 
   // update this.json
@@ -42,9 +58,7 @@ class Model {
   input(json) {
     this.setJson(json);
     this.getCsv(json)
-    .then(function(csv) {
-      this.setCsv(csv);
-    })
+    .then(this.setCsv.bind(this))
     .catch(function(error) {
       console.log(error);
     });
@@ -52,6 +66,7 @@ class Model {
 
   setJson(json) {
     this.json = json;
+    this._trigger('setJson');
   }
 
   isJson(json) {
@@ -90,6 +105,7 @@ class Model {
 
   setCsv(csv) {
     this.csv = csv;
+    this._trigger('setCsv');
   }
 }
 
@@ -101,9 +117,16 @@ class View {
     this.model = model;
     // variable to hold json container div
     // variable to hold csv container div
+    this.model.on('setCsv', this.render.bind(this));
+    this.model.on('setJson', this.render.bind(this));
   }
 
   render() {
-
+    let json = this.model.json;
+    let csv = this.model.csv;
+    console.log(json);
+    console.log(csv);
   }
+
+
 }
