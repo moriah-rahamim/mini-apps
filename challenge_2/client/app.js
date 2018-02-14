@@ -115,6 +115,8 @@ class Model {
 class View {
   constructor(model) {
     this.model = model;
+    this.$json = $('.json');
+    this.$csv = $('.csv');
     // variable to hold json container div
     // variable to hold csv container div
     this.model.on('setCsv', this.render.bind(this));
@@ -124,9 +126,13 @@ class View {
   render() {
     let json = this.model.json;
     let csv = this.model.csv;
-    console.log(json);
-    console.log(csv);
+    this._appendCsv(this.$csv, csv);
   }
 
-
+  _appendCsv($node, csv) {
+    let rows = csv.split('\n');
+    rows.forEach((lineOfText) => {
+      $node.append(`${lineOfText}<br />`);
+    });
+  }
 }
