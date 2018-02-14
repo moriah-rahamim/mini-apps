@@ -44,6 +44,9 @@ class Model {
     this.getCsv(json)
     .then(function(csv) {
       this.setCsv(csv);
+    })
+    .catch(function(error) {
+      console.log(error);
     });
   }
 
@@ -51,24 +54,37 @@ class Model {
     this.json = json;
   }
 
+  isJson(json) {
+    try {
+      JSON.parse(json);
+      return true;
+    }
+    catch(error) {
+      return false;
+    }
+  }
+
   getCsv(json) {
+    let isJson = this.isJson(json);
     return new Promise((resolve, reject) => {
-      $.ajax({
-        type: 'POST',
-        url: 'localhost:8000',
-        data: json,
-        dataType: 'text'
-        // ,
-        // contentType: 'json'
-        // ,
-        // success()
-      })
-      .done(function(data) {
-        resolve(data);
-      })
-      .fail(function(error) {
-        reject(error);
-      });
+      if (isJson) {
+        $.ajax({
+          type: 'POST',
+          url: 'http://localhost:8000',
+          data: json,
+          // dataType: 'text'
+          // ,
+          contentType: 'application/json'
+        })
+        .done(function(data) {
+          resolve(data);
+        })
+        .fail(function(error) {
+          reject(error);
+        });
+      } else {
+        reject ('content not provided in json format');
+      }
     });
   }
 
