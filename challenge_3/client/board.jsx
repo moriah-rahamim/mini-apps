@@ -5,8 +5,8 @@ class Board extends React.Component {
     this.columns = 7;
     this.rows = 6;
     this.playerAfter = {
-      red: 'black',
-      black: 'red'
+      red: 'yellow',
+      yellow: 'red'
     };
 
     this.state = {

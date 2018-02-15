@@ -15,13 +15,23 @@
 
   height: 50px;
   width: 50px;
-  border: solid black 1px;
+  border: solid blue 2px;
+
+  background-color: blue;
+}
+
+.piece {
+  height: 95%;
+  width: 95%;
+  border-radius: 50%;
 }
 
 .red {
   background-color: red;
 }
-
-.black {
-  background-color: black;
+.yellow {
+  background-color: yellow;
+}
+.empty {
+  background-color: white;
 }
