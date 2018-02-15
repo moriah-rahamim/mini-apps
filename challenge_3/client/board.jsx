@@ -4,9 +4,14 @@ class Board extends React.Component {
 
     this.columns = 7;
     this.rows = 6;
+    this.playerAfter = {
+      red: 'black',
+      black: 'red'
+    };
 
     this.state = {
-      board: Array(this.columns).fill(Array(this.rows).fill(null))
+      board: Array(this.columns).fill(Array(this.rows).fill(null)),
+      player: 'red'
     };
   }
 
@@ -16,7 +21,10 @@ class Board extends React.Component {
     this.setState({board: boardCopy});
   }
 
-  renderSlots() {
+  columnClick(colNum) {
+    let column = this.state.board[colNum];
+    let player = this.state.player;
+    let insertIdx = column.indexOf(null);
 
   }
 
@@ -28,13 +36,11 @@ class Board extends React.Component {
   render() {
     return (
       <div className="board">
-        <Slot col={1}/>
-        <Slot col={2}/>
-        <Slot col={3}/>
-        <Slot col={4}/>
-        <Slot col={5}/>
-        <Slot col={6}/>
-        <Slot col={7}/>
+        {
+          this.state.board.map((colArr, colNum) => {
+            return <Slot key={colNum} colNum={colNum} colArr={colArr}/>
+          })
+        }
       </div>
     );
   }
