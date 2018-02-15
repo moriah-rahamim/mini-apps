@@ -25,13 +25,22 @@
   width: 95%;
   border-radius: 50%;
 }
-
-.red {
+.piece.red {
   background-color: red;
 }
-.yellow {
-  background-color: yellow;
+.piece.yellow {
+  background-color: rgb(236, 223, 40);
 }
-.empty {
+.piece.empty {
   background-color: white;
+}
+
+.turns {
+  font-weight: bold;
+}
+.turns.red {
+  color: red;
+}
+.turns.yellow {
+  color: rgb(236, 223, 40);
 }

@@ -26,10 +26,15 @@ class Game extends React.Component {
 
   render() {
     return (
-      <Board rows={this.rows} columns={this.columns} 
-       togglePlayer={this.togglePlayer.bind(this)}
-       setWinner={this.setWinner.bind(this)} 
-       currentPlayer={this.state.player} />
+      <div className="game">
+        <h1>Connect Four</h1>
+        <h2 className={`turns ${this.state.player}`}>Your Turn: {this.state.player.toUpperCase()}</h2>
+        <h2 display="none" className="winner">{this.state.winMessage}</h2>
+        <Board rows={this.rows} columns={this.columns} 
+        togglePlayer={this.togglePlayer.bind(this)}
+        setWinner={this.setWinner.bind(this)} 
+        currentPlayer={this.state.player} />
+      </div>
     );
   }
 }
