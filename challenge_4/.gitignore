@@ -1,0 +1,5 @@
+# Compiled JS files
+client/compiled
+
+# OSX
+.DS_Store
