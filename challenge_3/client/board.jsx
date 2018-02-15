@@ -16,6 +16,10 @@ class Board extends React.Component {
     this.setState({board: boardCopy});
   }
 
+  renderSlots() {
+
+  }
+
   componentDidMount() {
     console.log('hello world');
     this.addPiece('red', 0, 0);
@@ -23,10 +27,14 @@ class Board extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>This is a react board component</div>
-        <div>Columns: {this.columns}</div>
-        <div>Rows: {this.rows}</div>
+      <div className="board">
+        <Slot col={1}/>
+        <Slot col={2}/>
+        <Slot col={3}/>
+        <Slot col={4}/>
+        <Slot col={5}/>
+        <Slot col={6}/>
+        <Slot col={7}/>
       </div>
     );
   }

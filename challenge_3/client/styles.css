@@ -1,0 +1,19 @@
+.board {
+  display: flex;
+  flex-direction: row;
+}
+
+.slot {
+  display:flex;
+  flex-direction: column-reverse;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 50px;
+  width: 50px;
+  border: solid black 1px;
+}
