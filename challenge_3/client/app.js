@@ -1,4 +1,4 @@
 ReactDOM.render(
-  <Board />,
+  <Game />,
   document.getElementById('app')
 );
