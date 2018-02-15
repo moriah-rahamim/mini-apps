@@ -12,12 +12,13 @@ class Game extends React.Component {
 
     this.state = {
       player: 'red',
-      winner: null
+      winner: null,
+      winnerDisplay: "none"
     };
   }
 
   setWinner(player) {
-    this.setState({winner: player});
+    this.setState({winner: player, winnerDisplay: 'block'});
   }
 
   togglePlayer() {
@@ -29,7 +30,7 @@ class Game extends React.Component {
       <div className="game">
         <h1>Connect Four</h1>
         <h2 className={`turns ${this.state.player}`}>Your Turn: {this.state.player.toUpperCase()}</h2>
-        <h2 display="none" className="winner">{this.state.winMessage}</h2>
+        <h2 display={this.state.winnerDisplay} className="winner">{this.state.winMessage}</h2>
         <Board rows={this.rows} columns={this.columns} 
         togglePlayer={this.togglePlayer.bind(this)}
         setWinner={this.setWinner.bind(this)} 

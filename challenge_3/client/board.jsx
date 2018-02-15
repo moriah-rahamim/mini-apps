@@ -12,7 +12,9 @@ class Board extends React.Component {
     let gridCopy = this.state.grid.map(arr => arr.slice());
     gridCopy[col][row] = currentPlayer;
     this.setState({grid: gridCopy}, function() {
-      if(this.winningMove.call(this, col, row, currentPlayer)) console.log('winner');
+      if(this.winningMove.call(this, col, row, currentPlayer)) {
+        this.props.setWinner(currentPlayer);
+      }
     });
   }
 
@@ -99,7 +101,7 @@ class Board extends React.Component {
     let yLeft = row - 1;
 
     // go right-up
-    while (xRight < this.props.cols && yRight < this.props.rows) {
+    while (xRight < this.props.columns && yRight < this.props.rows) {
       let right = this.state.grid[xRight][yRight];
 
       if (right === player) {
@@ -127,8 +129,7 @@ class Board extends React.Component {
     if (count >= 4) return true;
 
 
-
-
+    // check the other direction
     count = 0;
 
     xRight = col;
@@ -138,7 +139,7 @@ class Board extends React.Component {
     yLeft = row - 1;
 
     // go right-down
-    while (xRight < this.props.cols && yRight >= 0) {
+    while (xRight < this.props.columns && yRight >= 0) {
       let right = this.state.grid[xRight++][yRight--];
 
       if (right === player) {
@@ -175,5 +176,4 @@ class Board extends React.Component {
       </div>
     );
   }
-
 }
