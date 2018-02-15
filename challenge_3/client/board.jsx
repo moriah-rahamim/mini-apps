@@ -15,22 +15,23 @@ class Board extends React.Component {
     };
   }
 
-  addPiece(player, col, row) {
+  playPiece(col, row) {
+    let player = this.state.player;
     let boardCopy = this.state.board.map(arr => arr.slice());
     boardCopy[col][row] = player;
     this.setState({board: boardCopy});
   }
 
-  columnClick(colNum) {
+  clickSlot(colNum) {
+    // find the lowest-down empty spot
     let column = this.state.board[colNum];
-    let player = this.state.player;
-    let insertIdx = column.indexOf(null);
+    let insertRow = column.indexOf(null);
 
-  }
-
-  componentDidMount() {
-    console.log('hello world');
-    this.addPiece('red', 0, 0);
+    // if there's an empty spot, put the piece there and change the player
+    if (insertRow !== -1) {
+      this.playPiece(colNum, insertRow);
+      this.setState({player: this.playerAfter[this.state.player]});
+    }
   }
 
   render() {
@@ -38,7 +39,8 @@ class Board extends React.Component {
       <div className="board">
         {
           this.state.board.map((colArr, colNum) => {
-            return <Slot key={colNum} colNum={colNum} colArr={colArr}/>
+            return <Slot key={colNum} colNum={colNum} colArr={colArr}
+                    clickSlot={this.clickSlot.bind(this)}/>
           })
         }
       </div>

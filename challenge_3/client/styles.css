@@ -17,3 +17,11 @@
   width: 50px;
   border: solid black 1px;
 }
+
+.red {
+  background-color: red;
+}
+
+.black {
+  background-color: black;
+}
