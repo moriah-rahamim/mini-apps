@@ -1,0 +1,21 @@
+.scoreboard {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* border: solid black 2px; */
+}
+.frame {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  width: 80px;
+  border: solid black 2px;
+}
+
+.ball {
+  display: flex;
+  width: 50%;
+  border: solid black 1px;
+  justify-content: center;
+  align-items: center;
+}
